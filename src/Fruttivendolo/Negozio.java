@@ -8,8 +8,12 @@ public class Negozio {
     private ArrayList<Dipendente> dipendenti = null;
     private ArrayList<Frutto> frutti = null;
 
-    public Negozio(int idNegozio, String nome, String sede, ArrayList<Dipendente> dipendente, ArrayList<Frutto> frutti){
-
+    public Negozio(int idNegozio, String nome, String sede, ArrayList<Dipendente> dipendenti, ArrayList<Frutto> frutti){
+        this.idNegozio = idNegozio;
+        this.nome = nome;
+        this.sede = sede;
+        this.dipendenti = dipendenti;
+        this.frutti = frutti;
     }
 
     public int getIdNegozio() {

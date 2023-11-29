@@ -7,7 +7,7 @@ public class Dipendente {
     private String cellulare = null;
     private int idNegozio = 0;
 
-    public Dipendente(String nome, String cognome, String cellulare, int idNegozio) {
+    public Dipendente(int idDipendente,String nome, String cognome, String cellulare, int idNegozio) {
         this.idDipendente = idDipendente;
         this.nome = nome;
         this.cognome = cognome;

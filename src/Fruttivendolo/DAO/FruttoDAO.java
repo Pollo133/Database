@@ -84,7 +84,8 @@ public class FruttoDAO extends GenericDAO{
         }
 
         conn.close();
-        return null;}
+        return null;
+    }
 
     public static boolean update(Frutto frutto)throws SQLException{
 
