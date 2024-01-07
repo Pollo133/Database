@@ -1,20 +1,10 @@
 package Fruttivendolo;
 
-import Fruttivendolo.DAO.FruttoDAO;
-
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.sql.DriverManager;
-import java.sql.ResultSet;
-import java.util.ArrayList;
-import java.sql.Connection;
-import java.sql.DriverManager;
 import java.sql.SQLException;
-import java.sql.Statement;
 
 public class Frutto{
 
-    private int id = 0;
+    private static int id = 0;
     private String nome = null;
     private Stagionalita stagionalita = Stagionalita.ANNUALE;
     private int costoKg = 0;
@@ -22,7 +12,6 @@ public class Frutto{
     public Frutto(){}
 
     public Frutto(int id, String nome, Stagionalita stagionalita, int costoKg){
-        this.id = id;
         this.nome = nome;
         this.stagionalita = stagionalita;
         this.costoKg = costoKg;
@@ -39,6 +28,9 @@ public class Frutto{
         this.stagionalita = Stagionalita.valueOf(fields[2]);
         this.costoKg = Integer.parseInt(fields[3]);
 
+    }
+
+    public Frutto(Integer id, String nome, Stagionalita stagionalita, int costo) {
     }
 
     //setty
@@ -61,7 +53,7 @@ public class Frutto{
     }
     //getty
 
-    public int getId(){
+    public static int getId(){
         return id;
     }
 
@@ -106,12 +98,14 @@ public class Frutto{
     public static void main(String [] args){
 
         try{
-            FruttoDAO.update(
+            Fruttivendolo.DAO.FruttoDAO.update(
                     new Frutto(10,"mela di Rocca",Stagionalita.INVERNALE,0));
 
 
         }catch(SQLException e){
             e.printStackTrace();
+        } catch (ClassNotFoundException e) {
+            throw new RuntimeException(e);
         }
 
     }

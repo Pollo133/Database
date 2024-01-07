@@ -1,23 +1,27 @@
 package Fruttivendolo;
+import Fruttivendolo.Dipendente;
+import Fruttivendolo.Frutto;
+
 import java.util.ArrayList;
 
 public class Negozio {
-    private int idNegozio = 0;
+    private int id = 0;
     private String nome = null;
     private String sede = null;
     private ArrayList<Dipendente> dipendenti = null;
     private ArrayList<Frutto> frutti = null;
 
-    public Negozio(int idNegozio, String nome, String sede, ArrayList<Dipendente> dipendenti, ArrayList<Frutto> frutti){
-        this.idNegozio = idNegozio;
+
+    public Negozio(int idNegozio, String nome, String sede, ArrayList<Frutto> frutti, ArrayList<Dipendente> dipendenti) {
+        this.id = idNegozio;
         this.nome = nome;
         this.sede = sede;
-        this.dipendenti = dipendenti;
         this.frutti = frutti;
+        this.dipendenti = dipendenti;
     }
 
-    public int getIdNegozio() {
-        return idNegozio;
+    public int getId() {
+        return id;
     }
 
     public String getNome() {
@@ -28,8 +32,16 @@ public class Negozio {
         return sede;
     }
 
-    public void setIdNegozio(int idNegozio) {
-        this.idNegozio = idNegozio;
+    public ArrayList<Dipendente> getDipendenti() {
+        return dipendenti;
+    }
+
+    public ArrayList<Frutto> getFrutti() {
+        return frutti;
+    }
+
+    public void setId(int idNegozio) {
+        this.id = id;
     }
 
     public void setNome(String nome) {
@@ -40,16 +52,25 @@ public class Negozio {
         this.sede = sede;
     }
 
+    public void setDipendenti(ArrayList<Dipendente> dipendenti) {
+        this.dipendenti = dipendenti;
+    }
+
+    public void setFrutti(ArrayList<Frutto> frutti) {
+        this.frutti = frutti;
+    }
+
     @Override
     public String toString() {
         return "Negozio{" +
-                "idNegozio=" + idNegozio +
+                "idNegozio=" + id +
                 ", nome='" + nome + '\'' +
                 ", sede='" + sede + '\'' +
                 ", dipendenti='" + dipendenti + '\'' +
                 '}';
     }
 
-    public String toLine(){return idNegozio+";"+nome+";"+sede+"\n";}
+    public String toLine(){return id+";"+nome+";"+sede+"\n";}
+
 }
 

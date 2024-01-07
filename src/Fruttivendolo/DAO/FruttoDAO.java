@@ -1,4 +1,6 @@
 package Fruttivendolo.DAO;
+
+import Fruttivendolo.DAO.GenericDAO;
 import Fruttivendolo.Frutto;
 import Fruttivendolo.Stagionalita;
 
@@ -7,19 +9,19 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 
-public class FruttoDAO extends GenericDAO{
+public class FruttoDAO extends GenericDAO {
 
-    public static int create(Frutto frutto) throws SQLException{
+    public static int create(Frutto frutto) throws SQLException, ClassNotFoundException {
 
-        //id,nome,stagione,costoKg
+        GenericDAO.connect();
+        //id,nome,stagionalita,costoKg
         //INSERT INTO frutti VALUES(NULL,'mela','ESTIVA',100);
         String sql = "INSERT INTO frutti VALUES(NULL,'"
                 +frutto.getNome()+"' , '"
                 +frutto.getStagionalita().toString()+"' , "
                 +frutto.getCostoKg()+");";
 
-        GenericDAO.connect();
-        Statement stm = conn.createStatement();
+        Statement stm = GenericDAO.conn.createStatement();
         //executeUpdate per INSERT-DELETE-UPDATE sulle tuple della tabella
         stm.executeUpdate(sql);
 
@@ -37,9 +39,11 @@ public class FruttoDAO extends GenericDAO{
         return lastId;
     }
 
-    public static Frutto read(int id) throws SQLException{
-        //id,nome,stagione,costoKg
-        String sql = "SELECT id, nome, stagione, costoKg FROM frutti WHERE id = "+id+";";
+
+
+    public static Frutto read(int id) throws SQLException, ClassNotFoundException {
+        //id,nome,stagionalita,costoKg
+        String sql = "SELECT id, nome, stagionalita, costoKg FROM frutti WHERE id = "+id+";";
 
         GenericDAO.connect();
         Statement stm = GenericDAO.conn.createStatement();
@@ -49,18 +53,17 @@ public class FruttoDAO extends GenericDAO{
         if(rs!=null){
             rs.next();
             Frutto frutto = new Frutto(rs.getInt("id"),rs.getString("nome"),
-                    Stagionalita.valueOf(rs.getString("stagione")),
+                    Stagionalita.valueOf(rs.getString("stagionalita")),
                     rs.getInt("costoKg"));
             return frutto;
         }
 
-        return null;
-    }
+        return null;}
 
-    public static ArrayList<Object> readAll() throws SQLException{
+    public static ArrayList<Object> readAll() throws SQLException, ClassNotFoundException {
 
         ArrayList<Object> frutti = new ArrayList<Object>();
-        String sql = "SELECT id, nome, stagione, costoKg FROM frutti;";
+        String sql = "SELECT id, nome, stagionalita, costoKg FROM frutti;";
 
         GenericDAO.connect();
         Statement stm = GenericDAO.conn.createStatement();
@@ -71,12 +74,13 @@ public class FruttoDAO extends GenericDAO{
 
         if(rs!=null){
             while(rs.next()){
-                frutti.add(new Frutto(
-                        rs.getInt("id"),
-                        rs.getString("nome"),
-                        Stagionalita.valueOf(rs.getString("stagione")),
-                        rs.getInt("costoKg")
-                ));
+                Frutto frutto = new Frutto();
+                frutto.setId(rs.getInt("id"));
+                frutto.setNome(rs.getString("nome"));
+                frutto.setCostoKg(rs.getInt("costoKg"));
+                frutto.setStagionalita(Stagionalita.valueOf(rs.getString("stagionalita")));
+
+                frutti.add(frutto);
             }
 
             conn.close();
@@ -84,14 +88,13 @@ public class FruttoDAO extends GenericDAO{
         }
 
         conn.close();
-        return null;
-    }
+        return null;}
 
-    public static boolean update(Frutto frutto)throws SQLException{
+    public static boolean update(Frutto frutto) throws SQLException, ClassNotFoundException {
 
         String sql = "UPDATE frutti SET nome = '"+frutto.getNome()
                 +"' ,stagionalita = '"+frutto.getStagionalita().toString()
-                +"' ,costoKg = "+frutto.getCostoKg()+" WHERE id = "+frutto.getId()+";";
+                +"' ,costoKg = "+frutto.getCostoKg()+" WHERE id = "+ Frutto.getId()+";";
 
         GenericDAO.connect();
         Statement stm = GenericDAO.conn.createStatement();
@@ -100,14 +103,54 @@ public class FruttoDAO extends GenericDAO{
         return rc!=1;
     }
 
-    public static boolean delete(Frutto frutto)throws SQLException{
-
-        String sql = "DELETE FROM frutti WHERE id = "+frutto.getId()+";";
+    public static boolean delete(Frutto frutto) throws SQLException, ClassNotFoundException {
+        int id = Frutto.getId();
+        String sql = "DELETE FROM frutti WHERE id = "+id+";";
 
         GenericDAO.connect();
         Statement stm = GenericDAO.conn.createStatement();
         int rc = stm.executeUpdate(sql);
 
         return rc!=1;
+    }
+
+    public static ArrayList<Frutto> readAllNegozio(int idNegozio) throws SQLException, ClassNotFoundException {
+
+        ArrayList<Frutto> frutti = new ArrayList<>();
+
+        String sql = "SELECT frutti.id, frutti.nome, frutti.stagionalita, frutti.costoKg " +
+                "FROM frutti, fruttiNegozi " +
+                "WHERE fruttiNegozi.idNegozio = "+idNegozio +
+                " AND frutti.id = fruttiNegozi.idFrutto;";
+
+        GenericDAO.connect();
+        Statement stm = GenericDAO.conn.createStatement();
+
+        ResultSet rs = stm.executeQuery(sql);
+
+
+
+        while(rs.next()){
+            frutti.add(new Frutto(
+                    rs.getInt("id"),
+                    rs.getString("nome"),
+                    Stagionalita.valueOf(rs.getString("stagionalita")),
+                    rs.getInt("costoKg")
+            ));
+
+        }
+
+        GenericDAO.conn.close();
+        return frutti;
+
+    }
+
+    public static void deleteAll() throws SQLException, ClassNotFoundException {
+        String sql = "DELETE FROM frutti;";
+        GenericDAO.connect();
+        Statement stm = GenericDAO.conn.createStatement();
+        stm.executeUpdate(sql);
+
+        GenericDAO.conn.close();
     }
 }

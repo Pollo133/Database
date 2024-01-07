@@ -1,22 +1,22 @@
 package Fruttivendolo;
 
 public class Dipendente {
-    private int idDipendente = 0;
+    private int id = 0;
     private String nome = null;
     private String cognome = null;
     private String cellulare = null;
     private int idNegozio = 0;
 
     public Dipendente(int idDipendente,String nome, String cognome, String cellulare, int idNegozio) {
-        this.idDipendente = idDipendente;
+        this.id = idDipendente;
         this.nome = nome;
         this.cognome = cognome;
         this.cellulare = cellulare;
         this.idNegozio = idNegozio;
     }
 
-    public int getIdDipendente() {
-        return idDipendente;
+    public int getId() {
+        return id;
     }
 
     public String getNome() {
@@ -36,8 +36,8 @@ public class Dipendente {
 
     }
 
-    public void setIdDipendente(int idDipendente) {
-        this.idDipendente = idDipendente;
+    public void setId(int idDipendente) {
+        this.id = idDipendente;
     }
 
     public void setNome(String nome) {
@@ -59,7 +59,7 @@ public class Dipendente {
     @Override
     public String toString() {
         return "Dipendente{" +
-                "idDipendente=" + idDipendente +
+                "idDipendente=" + id +
                 ", nome='" + nome + '\'' +
                 ", cognome='" + cognome + '\'' +
                 ", cellulare='" + cellulare + '\'' +
